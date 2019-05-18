@@ -176,14 +176,6 @@ __asm__(".weak_reference _OBJC_CLASS_$_NSURL");
     [timer release];
 }
 
-- (BOOL)shouldAutorotate {
-    return YES;
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAll;
-}
-
 - (void)dealloc {
     [node release];
     [webView release];

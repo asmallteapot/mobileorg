@@ -238,14 +238,6 @@
     }
 }
 
-- (BOOL)shouldAutorotate {
-    return YES;
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAll;
-}
-
 - (void)dealloc {
     [valueBeforeEditing release];
     [editAction release];
