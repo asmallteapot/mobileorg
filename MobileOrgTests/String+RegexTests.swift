@@ -20,12 +20,10 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-
 import XCTest
 @testable import MobileOrg
 
-class String_RegexTests: XCTestCase {
-
+class StringRegexTests: XCTestCase {
 
   func teststringByReplacingOccurrencesOfRegex() {
 
@@ -53,7 +51,7 @@ class String_RegexTests: XCTestCase {
     let input = "   Emacs Naked\n   Scrollbar off and visible bell on\n    [[file:journal.org][Journal]]\n   #+begin_src emacs-lisp\n     (setq visible-bell t)\t\t       \n     (scroll-bar-mode 0)\n   #+end_src\n\n   Fullscreen on \n   Toolbar off\n   server start\n   #+begin_src emacs-lisp\n     (tool-bar-mode -1)\n     (toggle-frame-fullscreen)\n     (server-start)\n   #+end_src\n\n   \n   Unicode support\n   " as NSString
     let regex = "\\[\\[file:([a-zA-Z0-9/\\-_\\.]*\\.(?:org|txt))\\]\\[(.*)\\]\\]"
 
-    let output:[String] = ["[[file:journal.org][Journal]]","journal.org", "Journal"]
+    let output: [String] = ["[[file:journal.org][Journal]]", "journal.org", "Journal"]
 
     let test = input.captureComponentsMatchedBy(regex: regex)
     XCTAssertEqual(output, test)
@@ -62,7 +60,7 @@ class String_RegexTests: XCTestCase {
   func testCaptureComponentsMatchedByForFiles() {
     let input = "[[file:journal.org][journal.org]]" as NSString
     let regex = "\\[\\[file:([a-zA-Z0-9/\\-_\\.]*\\.(?:org|txt))\\]\\[(.*)\\]\\]"
-    let output = ["[[file:journal.org][journal.org]]","journal.org", "journal.org"]
+    let output = ["[[file:journal.org][journal.org]]", "journal.org", "journal.org"]
     let test = input.captureComponentsMatchedBy(regex: regex)
     XCTAssertEqual(output, test)
   }
@@ -70,7 +68,7 @@ class String_RegexTests: XCTestCase {
   func testCaptureComponentsMatchedByForFiles2() {
     let input = "[[file:agendas.org][Agenda Views]]" as NSString
     let regex = "\\[\\[file:([a-zA-Z0-9/\\-_\\.]*\\.(?:org|txt))\\]\\[(.*)\\]\\]"
-    let output:[String] = ["[[file:agendas.org][Agenda Views]]", "agendas.org", "Agenda Views"]
+    let output: [String] = ["[[file:agendas.org][Agenda Views]]", "agendas.org", "Agenda Views"]
     let test = input.captureComponentsMatchedBy(regex: regex)
     XCTAssertEqual(output, test)
   }

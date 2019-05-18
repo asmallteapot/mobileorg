@@ -11,8 +11,10 @@ import CoreData
 
 @testable import MobileOrg
 
+// swiftlint:disable xctfail_message
+
 class WebDavTests: XCTestCase {
-  var moc:NSManagedObjectContext?
+  var moc: NSManagedObjectContext?
 
   override func setUp() {
     super.setUp()
@@ -20,13 +22,12 @@ class WebDavTests: XCTestCase {
     let context = setUpInMemoryManagedObjectContext()
     moc = context
 
-
     PersistenceStack.shared.moc = moc!
 
     Settings.instance().serverMode = ServerModeWebDav
     Settings.instance().username = "schnuddelhuddel"
     Settings.instance().password = "schnuddelhuddel"
-    Settings.instance().indexUrl = URL(string:  "https://mobileOrgWebDav.schnuddelhuddel.de:32773/index.org")
+    Settings.instance().indexUrl = URL(string: "https://mobileOrgWebDav.schnuddelhuddel.de:32773/index.org")
     Settings.instance().encryptionPassword = "SchnuddelHuddel"
 
   }
@@ -44,7 +45,7 @@ class WebDavTests: XCTestCase {
     let dispatchTime = DispatchTime.now() + Double(4000000000) / Double(NSEC_PER_SEC)
     DispatchQueue.main.asyncAfter (deadline: dispatchTime,
                                    execute: {
-                                    () -> (Void) in
+                                    () -> Void in
 
                                     do {
                                       let fetchRequest = NSFetchRequest<Node>(entityName: "Node")
@@ -69,7 +70,7 @@ class WebDavTests: XCTestCase {
     let dispatchTime = DispatchTime.now() + Double(4000000000) / Double(NSEC_PER_SEC)
     DispatchQueue.main.asyncAfter (deadline: dispatchTime,
                                    execute: {
-                                    () -> (Void) in
+                                    () -> Void in
 
                                     do {
 
@@ -109,7 +110,7 @@ class WebDavTests: XCTestCase {
     let dispatchTime = DispatchTime.now() + Double(4000000000) / Double(NSEC_PER_SEC)
     DispatchQueue.main.asyncAfter (deadline: dispatchTime,
                                    execute: {
-                                    () -> (Void) in
+                                    () -> Void in
 
                                     do {
 
@@ -128,30 +129,32 @@ class WebDavTests: XCTestCase {
 
                                       tagEditController?.recentTagString = ""
                                       tagEditController?.commitNewTag()
-                                      
+
                                       Save()
-                                      
+
                                       SyncManager.instance().sync()
                                       syncExpectation.fulfill()
                                       XCTAssertEqual(nodes.first?.tags, "::")
-                                      
+
                                     } catch _ { XCTFail() }
     })
-    
+
     waitForExpectations(timeout: 5, handler: nil)
   }
-  
+
   func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
     let path = Bundle.main.path(forResource: "MobileOrg2", ofType: "momd")
     let momURL = URL.init(fileURLWithPath: path!)
     let managedObjectModel = NSManagedObjectModel.init(contentsOf: momURL)
 
     let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel!)
+    // swiftlint:disable force_try
     try! persistentStoreCoordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
-    
+    // swiftlint:enable force_try
+
     let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
-    
+
     return managedObjectContext
   }
 }

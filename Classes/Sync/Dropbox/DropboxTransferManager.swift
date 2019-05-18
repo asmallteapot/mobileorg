@@ -19,22 +19,21 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-
 import Foundation
 import SwiftyDropbox
 
 @objcMembers final class DropboxTransferManager: NSObject {
 
-  var activeTransfer:TransferContext? = nil
-  var transfers:[TransferContext] = []
-  var _active = false
+  var activeTransfer: TransferContext?
+  var transfers: [TransferContext] = []
+  fileprivate var _active = false
   var paused = false
 
-  var active:Bool{
+  var active: Bool {
     get { return _active }
     set {_active = newValue }
   }
-  
+
   func queueSize() -> Int {
     return transfers.count
   }
@@ -49,14 +48,15 @@ import SwiftyDropbox
 
   // Workaround to suffice to TransferManager protocol
 
-
   static let instance = DropboxTransferManager()
 
   override init() {
     let filePath = Bundle.main.path(forResource: "AppKey", ofType: "plist")
-    let plist = NSDictionary(contentsOfFile:filePath!)
+    let plist = NSDictionary(contentsOfFile: filePath!)
     let dkist = plist?["Dropbox API Key"] as? NSDictionary
+    // swiftlint:disable force_cast
     let appKey = dkist?.object(forKey: "AppKey") as! String
+    // swiftlint:enable force_cast
     DropboxClientsManager.setupWithAppKey(appKey)
   }
 
@@ -72,7 +72,6 @@ import SwiftyDropbox
                                                   openURL: { (url: URL) -> Void in
                                                     UIApplication.shared.openURL(url)})
   }
-
 
   /// Handle Dropbox Authorisation FLow
   /// Triggerd by AppDelegate
@@ -95,7 +94,6 @@ import SwiftyDropbox
     return true
   }
 
-
   /// Indicates whether a Dropbox link is established or not
   ///
   /// - Returns: State of Dropbox link
@@ -108,7 +106,7 @@ import SwiftyDropbox
     DropboxClientsManager.unlinkClients()
   }
 
-  func enqueueTransfer(_ context: TransferContext){
+  func enqueueTransfer(_ context: TransferContext) {
     transfers.append(context)
     ShowStatusView()
     dispatchNextTransfer()
@@ -117,7 +115,7 @@ import SwiftyDropbox
   func dispatchNextTransfer() {
 
     if paused { return }
-    
+
     if let syncManager = SyncManager.instance(),
       transfers.count > 0,
       transfers.first?.remoteUrl != nil,
@@ -129,7 +127,6 @@ import SwiftyDropbox
       transfers.remove(at: 0)
 
       let filename = activeTransfer?.remoteUrl.lastPathComponent
-
 
       // Update status view text
       syncManager.transferFilename = filename
@@ -146,10 +143,10 @@ import SwiftyDropbox
 
   func processRequest(_ context: TransferContext) {
     if !isLinked() {
-      activeTransfer?.errorText = "Not logged in, please login from the Settings page.";
-      activeTransfer?.success = false;
+      activeTransfer?.errorText = "Not logged in, please login from the Settings page."
+      activeTransfer?.success = false
       requestFinished(activeTransfer!)
-      return;
+      return
     }
 
     if context.dummy {
@@ -193,7 +190,7 @@ import SwiftyDropbox
     dispatchNextTransfer()
   }
 
-  func downloadFile(from: String, to: String) {
+  func downloadFile(from sourcePath: String, to destinationPath: String) {
 
     if let client = DropboxClientsManager.authorizedClient {
 
@@ -203,7 +200,7 @@ import SwiftyDropbox
       }
 
       // Unescape URL
-      if let unescapedFrom = from.removingPercentEncoding {
+      if let unescapedFrom = sourcePath.removingPercentEncoding {
 
         // Download file from dropbox
         // files reside in app's root folder
@@ -247,13 +244,13 @@ import SwiftyDropbox
     }
   }
 
-  func uploadFile(to: String, from: String) {
+  func uploadFile(to destinationPath: String, from sourcePath: String) {
     if let client = DropboxClientsManager.authorizedClient,
-      let data = NSData(contentsOfFile: from) {
+      let data = NSData(contentsOfFile: sourcePath) {
       UIApplication.shared.isNetworkActivityIndicatorVisible = true
 
       // TODO: mute should be set by the user
-      client.files.upload(path: to, mode: .overwrite, autorename: false, clientModified: nil, mute: false, input: Data(referencing: data))
+      client.files.upload(path: destinationPath, mode: .overwrite, autorename: false, clientModified: nil, mute: false, input: Data(referencing: data))
         .response { response, error in
           if response != nil {
             self.activeTransfer?.success = true
@@ -275,5 +272,3 @@ import SwiftyDropbox
     }
   }
 }
-
-

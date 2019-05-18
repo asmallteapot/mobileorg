@@ -20,7 +20,6 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-
 import Foundation
 import UIKit
 
@@ -28,9 +27,9 @@ class SyncSettingsController: UITableViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
@@ -42,15 +41,15 @@ class SyncSettingsController: UITableViewController {
   }
 
   override func numberOfSections(in tableView: UITableView) -> Int {
-    return 2;
+    return 2
   }
-  
+
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     switch section {
     case 0: // server mode
       return 2
     case 1:// server settings
-      if (Settings.instance().serverMode == ServerModeDropbox) {
+      if Settings.instance().serverMode == ServerModeDropbox {
         return 2
       } else {
         return 3
@@ -60,11 +59,11 @@ class SyncSettingsController: UITableViewController {
     }
     return 0
   }
-  
+
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
     return ""
   }
-  
+
   override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     if section == 1 { // server settings section
       return "For help on configuration, visit https://mobileorg.github.io/support"
@@ -72,14 +71,13 @@ class SyncSettingsController: UITableViewController {
       return ""
     }
   }
-  
-  
+
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
+
     if indexPath.section == 0 { // first section
-      
+
       let cell = tableView.dequeueReusableCell(withIdentifier: "ServiceCell", for: indexPath) as UITableViewCell
-      
+
       if indexPath.row == 0 { // first row - dropbox
         cell.textLabel?.text = "Dropbox"
         if Settings.instance().serverMode == ServerModeDropbox {
@@ -96,11 +94,13 @@ class SyncSettingsController: UITableViewController {
         }
       }
       return cell
-      
+
     } else { // second section
 
-      if (Settings.instance().serverMode == ServerModeWebDav) { // webdav is selected
+      if Settings.instance().serverMode == ServerModeWebDav { // webdav is selected
+        // swiftlint:disable force_cast
         let cell = tableView.dequeueReusableCell(withIdentifier: "TextFieldCell", for: indexPath) as! TextInputCell
+        // swiftlint:enable force_cast
         cell.textField.removeTarget(self, action: nil, for: .allEvents)
 
         switch indexPath.row {
@@ -125,20 +125,22 @@ class SyncSettingsController: UITableViewController {
           return cell
         }
       } else { // dropbox is selected
-        
+
         if indexPath.row == 0 {
+          // swiftlint:disable force_cast
           let cell = tableView.dequeueReusableCell(withIdentifier: "TextFieldCell", for: indexPath) as! TextInputCell
+          // swiftlint:enable force_try
 
           cell.textField.removeTarget(self, action: nil, for: .allEvents)
           cell.textField.addTarget(self, action: #selector(dropboxIndexChanged), for: UIControl.Event.editingDidEnd)
           cell.textFieldLabel.text = "Index File"
           cell.textField.text = Settings.instance().dropboxIndex
           return cell
-          
+
         } else {
           let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonCell", for: indexPath)
-          
-          if (DropboxTransferManager.instance.isLinked()) {
+
+          if DropboxTransferManager.instance.isLinked() {
             cell.textLabel?.text = "Unlink from Dropbox"
             cell.textLabel?.textColor = UIColor.red
           } else {
@@ -150,11 +152,11 @@ class SyncSettingsController: UITableViewController {
       }
     }
   }
-  
+
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
+
     if indexPath.section == 0 { // server mode
-      
+
       if indexPath.row == 0 { // dropbox
         Settings.instance().serverMode = ServerModeDropbox
       } else { // webdav
@@ -163,10 +165,10 @@ class SyncSettingsController: UITableViewController {
       self.tableView.reloadData()
       self.tableView.setNeedsDisplay()
 
-    } else if (indexPath.section == 1 && Settings.instance().serverMode == ServerModeDropbox) { // server settings - dropbox mode
-      
+    } else if indexPath.section == 1 && Settings.instance().serverMode == ServerModeDropbox { // server settings - dropbox mode
+
       if indexPath.row == 1 { // dropbox button
-        
+
         if DropboxTransferManager.instance.isLinked() {
           DropboxTransferManager.instance.unlink()
           self.tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
@@ -176,16 +178,16 @@ class SyncSettingsController: UITableViewController {
       }
     }
   }
-  
+
   @objc func serverUrlChanged(sender: UITextField) {
-    
+
     if sender.text?.rangeOf(regex: "http.*\\.(?:org|txt)$").location == NSNotFound {
-      
+
       let alert = UIAlertController(title: "Invalid path",
                                     message: "This setting should be the complete URL to a .org file on a WebDAV server.  For instance, http://www.example.com/private/org/index.org",
                                     preferredStyle: .alert)
       let cancelAction = UIAlertAction( title: "OK", style: .cancel)
-      
+
       alert.addAction(cancelAction)
       self.present(alert, animated: true)
     }
@@ -197,18 +199,18 @@ class SyncSettingsController: UITableViewController {
       let oldUrlString = Settings.instance().indexUrl?.absoluteString,
       newUrlString != oldUrlString {
       if !newUrlString.isEmpty {
-        if (CountLocalEditActions() > 0) {
-          let alert = UIAlertController(title: "Proceed with Change?", message:"Changing the URL to another set of files may invalidate the local changes you have made.  You may want to sync with the old URL first instead.\n\nProceed to change URL",
+        if CountLocalEditActions() > 0 {
+          let alert = UIAlertController(title: "Proceed with Change?", message: "Changing the URL to another set of files may invalidate the local changes you have made.  You may want to sync with the old URL first instead.\n\nProceed to change URL",
                                         preferredStyle: .alert)
-          
+
           alert.addAction(UIAlertAction(title: "OK",
                                         style: .default,
-                                        handler: {(alert: UIAlertAction!) in
+                                        handler: {(_: UIAlertAction!) in
                                           self.applyNewServerUrl(url: newUrlString) }))
-          
+
           alert.addAction(UIAlertAction(title: "Cancel",
                                         style: .cancel,
-                                        handler: {(alert: UIAlertAction!) in
+                                        handler: {(_: UIAlertAction!) in
                                           sender.text = oldUrlString
                                           sender.text = "" }))
           self.present(alert, animated: true)
@@ -230,15 +232,15 @@ class SyncSettingsController: UITableViewController {
       self.resetAppData()
     }
   }
-  
+
   @objc func usernameChanged(sender: UITextField) {
     Settings.instance().username = sender.text
   }
-  
+
   @objc func passwordChanged(sender: UITextField) {
     Settings.instance().password = sender.text
   }
-  
+
   @objc func dropboxIndexChanged(sender: UITextField) {
     Settings.instance().dropboxIndex = sender.text
     print("dropboxIndexChanged")
@@ -247,7 +249,7 @@ class SyncSettingsController: UITableViewController {
   @objc func dropboxAuthSuccess(sender: Any?) {
     self.tableView.reloadData()
   }
-  
+
   func resetAppData() {
     SessionManager.instance().reset()
     AppInstance().searchController.reset()

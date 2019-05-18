@@ -20,19 +20,17 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-
 import Foundation
 
 public extension NSString {
 
+  @objc func componentsSeparatedBy(regex: String) -> [String] {
 
-  @objc func componentsSeparatedBy(regex: String) -> Array<String> {
-
-    guard let re = try? NSRegularExpression(pattern: regex, options: [])
+    guard let regex = try? NSRegularExpression(pattern: regex, options: [])
       else { return [] }
 
     let stop = "<SomeStringThatYouDoNotExpectToOccurInSelf>"
-    let modifiedString = re.stringByReplacingMatches(
+    let modifiedString = regex.stringByReplacingMatches(
       in: self as String,
       options: [],
       range: NSRange(location: 0, length: self.length),
@@ -40,30 +38,29 @@ public extension NSString {
     return modifiedString.components(separatedBy: stop)
   }
 
-
-  @objc func arrayOfCaptureComponentsMatchedBy(regex: String) -> Array<Array<String>> {
+  @objc func arrayOfCaptureComponentsMatchedBy(regex: String) -> [[String]] {
     let capture = self.captureComponentsMatchedBy(regex: regex)
     if capture.count > 0 {
-      let ret:[Array<String>] = [capture]
+      let ret: [[String]] = [capture]
         return ret
     }
     return []
   }
 
-  @objc func captureComponentsMatchedBy(regex: String) -> Array<String> {
+  @objc func captureComponentsMatchedBy(regex: String) -> [String] {
 
     do {
-      var result:[String] = []
+      var result: [String] = []
       let swiftString = String(self)
       let rgx = try NSRegularExpression(pattern: regex, options: [])
 
       let matches = rgx.matches(in: swiftString, options: [], range: NSRange(swiftString.startIndex..., in: swiftString))
       for match in matches {
-        for n in 0..<match.numberOfRanges {
-            let range = match.range(at: n)
+        for index in 0..<match.numberOfRanges {
+            let range = match.range(at: index)
             guard range.lowerBound != NSNotFound else {
                 //In the case of no match a range {NSNotFound, 0} is returned
-                break;
+                break
             }
 
           let begin = swiftString.index(swiftString.startIndex, offsetBy: range.location)
@@ -78,13 +75,13 @@ public extension NSString {
   }
 
   @objc func rangeOf(regex: String) -> NSRange {
-    let range = NSMakeRange(0, self.length)
+    let range = NSRange(location: 0, length: self.length)
     let match = self.range(of: regex, options: .regularExpression, range: range)
     return match
   }
 
   @objc func isMatchedBy(regex: String) -> Bool {
-    let range = NSMakeRange(0, self.length)
+    let range = NSRange(location: 0, length: self.length)
     let match = self.range(of: regex, options: .regularExpression, range: range)
     if match.location == NSNotFound {
       return false
@@ -92,12 +89,13 @@ public extension NSString {
     return true
   }
 
-
   @objc func stringByReplacingOccurrencesOf(regex: String, withString: String) -> String {
 
+    // swiftlint:disable force_try
     let rgx = try! NSRegularExpression(pattern: regex,
                                          options: NSRegularExpression.Options.caseInsensitive)
-    let range = NSMakeRange(0, self.length)
+    // swiftlint:enable force_try
+    let range = NSRange(location: 0, length: self.length)
     let modString = rgx.stringByReplacingMatches(in: self as String,
                                                    options: [],
                                                    range: range,

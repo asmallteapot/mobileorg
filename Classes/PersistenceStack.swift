@@ -9,14 +9,13 @@
 import Foundation
 import CoreData
 
-@objcMembers final class PersistenceStack:NSObject {
+@objcMembers final class PersistenceStack: NSObject {
 
   static let shared = PersistenceStack()
 
-  var moc:NSManagedObjectContext
+  var moc: NSManagedObjectContext
 
   private override init() {
     self.moc = AppInstance().managedObjectContext
   }
 }
-

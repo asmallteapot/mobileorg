@@ -20,11 +20,13 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
+// swiftlint:disable xctfail_message
+
 import XCTest
 import CoreData
 
 class OrgfileParserTests: XCTestCase {
-  var moc:NSManagedObjectContext?
+  var moc: NSManagedObjectContext?
 
   // Tackles bug described in:
   // https://github.com/MobileOrg/mobileorg/issues/96
@@ -47,23 +49,17 @@ class OrgfileParserTests: XCTestCase {
 
     let settings = Settings.instance()
     if let keywordsMetaArray = settings.todoStateGroups {
-      for case let keywordsArray as Array<Array<String>> in keywordsMetaArray {
+      for case let keywordsArray as [[String]] in keywordsMetaArray {
         for keywords in keywordsArray {
-          for keyword in keywords {
-            if keyword == "|" {
-              XCTFail()
-            }
+          for keyword in keywords where keyword == "|" {
+            XCTFail()
           }
         }
       }
-    }
-    else {
+    } else {
       XCTFail()
     }
   }
-  
-
-
 
   // Parse OrgFiles for todo-keywords of different kind
   func testParseOrgFileDifferentTodoWords() {
@@ -108,7 +104,6 @@ class OrgfileParserTests: XCTestCase {
     } catch _ { XCTFail() }
   }
 
-
   // Tackles bug described in:
   // https://github.com/MobileOrg/mobileorg/issues/86
   func testParseOrgFileDefaultTodoWordsBug() {
@@ -124,8 +119,6 @@ class OrgfileParserTests: XCTestCase {
     // If we reach this point without a crash, then the test was successful
   }
 
-
-
   // Tackles bug described in:
   // https://github.com/MobileOrg/mobileorg/issues/62
   func testParseOrgFileSkippingHeadingBug() {
@@ -137,7 +130,9 @@ class OrgfileParserTests: XCTestCase {
     parser.orgFilename = "Heading"
     parser.parse(moc)
 
+    // swiftlint:disable force_try
     try! moc?.save()
+    // swiftlint:enable force_try
 
     let fetchRequest = NSFetchRequest<Node>(entityName: "Node")
     fetchRequest.predicate = NSPredicate (format: "outlinePath == %@", "olp:Heading:MobileOrg Missing Features/Localisation")
@@ -146,7 +141,6 @@ class OrgfileParserTests: XCTestCase {
       let nodes = try moc!.fetch(fetchRequest)
 
       XCTAssertEqual(nodes.count, 1)
-
 
     } catch _ { XCTFail() }
 
@@ -161,7 +155,9 @@ class OrgfileParserTests: XCTestCase {
     parser.orgFilename = "Heading"
     parser.parse(moc)
 
+    // swiftlint:disable force_try
     try! moc?.save()
+    // swiftlint:enable force_try
 
     let fetchRequest = NSFetchRequest<Node>(entityName: "Node")
     fetchRequest.predicate = NSPredicate (format: "heading == %@", "Third node with a todo list [1/3]")
@@ -175,10 +171,8 @@ class OrgfileParserTests: XCTestCase {
         XCTFail()
       }
     } catch _ { XCTFail() }
-    
+
   }
-
-
 
   func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
 
@@ -187,7 +181,9 @@ class OrgfileParserTests: XCTestCase {
     let managedObjectModel = NSManagedObjectModel.init(contentsOf: momURL)
 
     let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel!)
+    // swiftlint:disable force_try
     try! persistentStoreCoordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
+    // swiftlint:enable force_try
 
     let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator

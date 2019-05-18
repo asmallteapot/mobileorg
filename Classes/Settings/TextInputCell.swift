@@ -20,16 +20,14 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-
 import Foundation
 
 public class TextInputCell: UITableViewCell {
-  
+
   @IBOutlet weak var textField: UITextField!
   @IBOutlet weak var textFieldLabel: UILabel!
-  
+
   @IBAction func textFieldChanged(sender: AnyObject) {
     self.textField.resignFirstResponder()
   }
 }
-

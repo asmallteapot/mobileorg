@@ -714,12 +714,13 @@
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "MobileOrg" */;
 			buildPhases = (
 				3A00323B994F9BD13A52A837 /* [CP] Check Pods Manifest.lock */,
-				1D60588D0D05DD3D006BFB54 /* Resources */,
-				743C12F21DFEC9A80051EC6F /* Run Script */,
-				83E77D421E2727790049AB02 /* ShellScript */,
+				9B55FD3A2290B86100CBE9A8 /* Lint Swift files */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				2F55B0EE1CCB83973FFF76A4 /* [CP] Embed Pods Frameworks */,
+				1D60588D0D05DD3D006BFB54 /* Resources */,
+				743C12F21DFEC9A80051EC6F /* Add Dropbox API Credentials to Info.plist */,
+				83E77D421E2727790049AB02 /* Set Build Number */,
 			);
 			buildRules = (
 			);
@@ -734,6 +735,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 747BF9A11DFD719400E800FB /* Build configuration list for PBXNativeTarget "MobileOrgTests" */;
 			buildPhases = (
+				9B55FD3B2290B8AF00CBE9A8 /* Lint Swift Files */,
 				747BF9931DFD719400E800FB /* Sources */,
 				747BF9941DFD719400E800FB /* Frameworks */,
 				747BF9951DFD719400E800FB /* Resources */,
@@ -906,32 +908,69 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		743C12F21DFEC9A80051EC6F /* Run Script */ = {
+		743C12F21DFEC9A80051EC6F /* Add Dropbox API Credentials to Info.plist */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
+			name = "Add Dropbox API Credentials to Info.plist";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pbuddy=/usr/libexec/PlistBuddy\nAPIKEY=`/usr/libexec/PlistBuddy -c 'print :Dropbox\\ API\\ Key:AppKey' Configuration/AppKey.plist`\nAPISECRET=`/usr/libexec/PlistBuddy -c 'print :Dropbox\\ API\\ Key:AppSecret' Configuration/AppKey.plist`\n$pbuddy -c \"set :CFBundleURLTypes:0:CFBundleURLSchemes:0 db-${APIKEY}\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"";
+			shellScript = "pbuddy=/usr/libexec/PlistBuddy\nAPIKEY=`/usr/libexec/PlistBuddy -c 'print :Dropbox\\ API\\ Key:AppKey' Configuration/AppKey.plist`\nAPISECRET=`/usr/libexec/PlistBuddy -c 'print :Dropbox\\ API\\ Key:AppSecret' Configuration/AppKey.plist`\n$pbuddy -c \"set :CFBundleURLTypes:0:CFBundleURLSchemes:0 db-${APIKEY}\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
 		};
-		83E77D421E2727790049AB02 /* ShellScript */ = {
+		83E77D421E2727790049AB02 /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Set Build Number";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "git=`sh /etc/profile; which git`\nappBuild=`\"$git\" rev-list HEAD --count`\nif [ $CONFIGURATION = \"Debug\" ]; then\nbranchName=`\"$git\" rev-parse --abbrev-ref HEAD`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild-$branchName\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild-$branchName\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}.dSYM/Contents/Info.plist\"\nelse\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}.dSYM/Contents/Info.plist\"\nfi\necho \"Incremented the build number ${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"";
+			shellScript = "git=`sh /etc/profile; which git`\nappBuild=`\"$git\" rev-list HEAD --count`\nif [ $CONFIGURATION = \"Debug\" ]; then\nbranchName=`\"$git\" rev-parse --abbrev-ref HEAD`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild-$branchName\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild-$branchName\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}.dSYM/Contents/Info.plist\"\nelse\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}.dSYM/Contents/Info.plist\"\nfi\necho \"Incremented the build number ${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
+		};
+		9B55FD3A2290B86100CBE9A8 /* Lint Swift files */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Lint Swift files";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		9B55FD3B2290B8AF00CBE9A8 /* Lint Swift Files */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Lint Swift Files";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

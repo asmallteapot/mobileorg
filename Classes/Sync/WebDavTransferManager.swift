@@ -25,14 +25,14 @@ import Foundation
 
 @objcMembers final class WebDavTransferManager: NSObject {
 
-  var activeTransfer:TransferContext? = nil
-  var transfers:[TransferContext] = []
+  var activeTransfer: TransferContext?
+  var transfers: [TransferContext] = []
   var active = false
   var paused = false
   var connection: URLSession?
   var data = NSMutableData()
-  var fileSize:Int = 0
-  var session:URLSession?
+  var fileSize: Int = 0
+  var session: URLSession?
 
   static let instance = WebDavTransferManager()
 
@@ -48,7 +48,7 @@ import Foundation
   }
 
   func dispatchNextTransfer() {
-    guard(!paused) else {return}
+    guard !paused else {return}
     guard transfers.count > 0 else {
       HideStatusView()
       return
@@ -63,7 +63,6 @@ import Foundation
         syncManager.transferFilename = self.activeTransfer?.remoteUrl.lastPathComponent
         syncManager.progressTotal = 0
         syncManager.updateStatus()
-
 
       self.active = true
       UIApplication.shared.isNetworkActivityIndicatorVisible = true
@@ -89,8 +88,7 @@ import Foundation
       var request = URLRequest(url: context.remoteUrl, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 30)
       if context.transferType == TransferTypeDownload {
         request.httpMethod = "GET"
-      }
-      else {
+      } else {
         request.httpMethod = "PUT"
         if let nsData = NSData(contentsOfFile: context.localFile) {
           request.httpBody = nsData as Data
@@ -138,7 +136,7 @@ import Foundation
     dispatchNextTransfer()
   }
 
-  func busy() -> Bool{
+  func busy() -> Bool {
     return (transfers.count > 0 || active)
   }
 
@@ -155,9 +153,7 @@ import Foundation
   }
 }
 
-extension WebDavTransferManager:URLSessionDataDelegate {
-
-
+extension WebDavTransferManager: URLSessionDataDelegate {
 
   func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
      guard challenge.previousFailureCount == 0 else {
@@ -168,7 +164,7 @@ extension WebDavTransferManager:URLSessionDataDelegate {
       return
     }
     // We've got a URLAuthenticationChallenge - we simply trust the HTTPS server and we proceed
-    if let _ = challenge.protectionSpace.serverTrust {
+    if challenge.protectionSpace.serverTrust != nil {
       let credential = URLCredential(trust: challenge.protectionSpace.serverTrust!)
       completionHandler(.useCredential, credential)
     } else {
@@ -220,7 +216,6 @@ extension WebDavTransferManager:URLSessionDataDelegate {
         activeTransfer?.errorText = "\(statusCode): Unknown error for file: \(file)"
       }
     }
-
 
       if activeTransfer?.transferType == TransferTypeDownload,
         activeTransfer?.success == true,
