@@ -196,13 +196,6 @@ __asm__(".weak_reference _OBJC_CLASS_$_NSURL");
     // Release any cached data, images, etc that aren't in use.
 }
 
-- (void)viewDidUnload {
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-
-    [webView release];
-}
-
 - (void)dealloc {
     [node release];
     [webView release];

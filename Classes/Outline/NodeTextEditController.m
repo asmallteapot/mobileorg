@@ -254,9 +254,6 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)viewDidUnload {
-}
-
 - (void)dealloc {
     [valueBeforeEditing release];
     [editAction release];
