@@ -246,10 +246,6 @@
     return UIInterfaceOrientationMaskAll;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
 - (void)dealloc {
     [valueBeforeEditing release];
     [editAction release];

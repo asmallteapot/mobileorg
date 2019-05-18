@@ -41,11 +41,6 @@ class SyncSettingsController: UITableViewController {
     NotificationCenter.default.removeObserver("dropboxloginsuccess")
   }
 
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-  
   override func numberOfSections(in tableView: UITableView) -> Int {
     return 2;
   }

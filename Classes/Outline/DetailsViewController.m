@@ -271,11 +271,6 @@ typedef enum {
     [[SessionManager instance] popOutlineStateToLevel:(int)[self.navigationController.viewControllers indexOfObject:self]];
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

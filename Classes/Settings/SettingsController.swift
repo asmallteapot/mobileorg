@@ -78,11 +78,6 @@ class SettingsController: UITableViewController {
     self.tableView.setNeedsDisplay()
   }
 
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-  
   @objc func onSyncComplete() {
     Settings.instance().lastSync = Date()
   }
