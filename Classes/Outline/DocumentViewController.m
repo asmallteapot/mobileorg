@@ -176,10 +176,6 @@ __asm__(".weak_reference _OBJC_CLASS_$_NSURL");
     [timer release];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return YES;
-}
-
 - (BOOL)shouldAutorotate {
     return YES;
 }

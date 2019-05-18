@@ -205,10 +205,6 @@
     [[self tableView] reloadData];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return YES;
-}
-
 - (BOOL)shouldAutorotate {
     return YES;
 }

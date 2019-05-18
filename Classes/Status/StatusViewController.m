@@ -197,10 +197,6 @@ static StatusViewController *gInstance = NULL;
                                                     name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return YES;
-}
-
 - (BOOL)shouldAutorotate {
     return YES;
 }
