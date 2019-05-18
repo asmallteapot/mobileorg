@@ -52,7 +52,7 @@
 #import <ifaddrs.h>
 #import <netdb.h>
 
-#import <CoreFoundation/CoreFoundation.h>
+@import CoreFoundation;
 
 #import "Reachability.h"
 

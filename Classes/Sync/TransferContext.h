@@ -26,7 +26,7 @@
 
 __asm__(".weak_reference _OBJC_CLASS_$_NSURL");
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "TransferManagerDelegate.h"
 
 typedef enum {

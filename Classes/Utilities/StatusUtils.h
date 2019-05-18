@@ -20,7 +20,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 // TODO: it would be nice if this was more like:
 // PushActivity("Downloading Org files")

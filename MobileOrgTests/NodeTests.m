@@ -20,7 +20,7 @@
 //
 
 
-#import <XCTest/XCTest.h>
+@import XCTest;
 #import "Node.h"
 
 @interface NodeTest : XCTestCase {

@@ -46,8 +46,8 @@
 */
 
 
-#import <Foundation/Foundation.h>
-#import <SystemConfiguration/SystemConfiguration.h>
+@import Foundation;
+@import SystemConfiguration;
 #include <netinet/in.h>
 
 typedef enum {
