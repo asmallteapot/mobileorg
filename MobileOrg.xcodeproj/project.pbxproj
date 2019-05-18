@@ -338,7 +338,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				83BCC85D203E92C700064F22 /* MobileOrg.entitlements */,
@@ -786,7 +786,7 @@
 				French,
 				German,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1021,7 +1021,7 @@
 				CODE_SIGN_ENTITLEMENTS = MobileOrg/MobileOrg.entitlements;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 30;
-				DEVELOPMENT_TEAM = 59B7VFRF7R;
+				DEVELOPMENT_TEAM = M79X7YBGA2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1035,7 +1035,7 @@
 				INFOPLIST_FILE = "MobileOrg-Info-Debug.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mobileorg.mobileorg-Debug";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asmallteapot.mobileorg-Debug";
 				PRODUCT_NAME = MobileOrg;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "MobileOrg-Bridging-Header.h";
@@ -1243,7 +1243,7 @@
 				CODE_SIGN_ENTITLEMENTS = MobileOrg/MobileOrg.entitlements;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 30;
-				DEVELOPMENT_TEAM = 59B7VFRF7R;
+				DEVELOPMENT_TEAM = M79X7YBGA2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1255,7 +1255,7 @@
 				INFOPLIST_FILE = "MobileOrg-Info-AdHoc.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mobileorg.mobileorg-Debug";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asmallteapot.mobileorg-Debug";
 				PRODUCT_NAME = MobileOrg;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "MobileOrg-Bridging-Header.h";
@@ -1316,7 +1316,7 @@
 				CODE_SIGN_ENTITLEMENTS = MobileOrg/MobileOrg.entitlements;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 30;
-				DEVELOPMENT_TEAM = 59B7VFRF7R;
+				DEVELOPMENT_TEAM = M79X7YBGA2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1328,7 +1328,7 @@
 				INFOPLIST_FILE = "MobileOrg-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mobileorg.mobileorg-Debug";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asmallteapot.mobileorg-Debug";
 				PRODUCT_NAME = MobileOrg;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "MobileOrg-Bridging-Header.h";
